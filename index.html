@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Friends</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+    
+            .container {
+                text-align: start;
+            }
+    
+            input[type="text"],
+            input[type="number"] {
+                padding: 8px;
+                margin: 5px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                width: 100px; 
+                display: inline-block;
+            }
+    
+            label {
+                display: inline-block;
+                width: 70px; 
+                text-align: right;
+                margin-right: 10px; 
+            }
+    
+            button {
+                padding: 10px 20px;
+                margin: 10px;
+                border: none;
+                border-radius: 5px;
+                background-color: #e787ff;
+                color: black;
+                cursor: pointer;
+            }
+    
+            button:hover {
+                background-color: #e26eff;
+            }
+    
+            #results {
+                margin-top: 20px;
+            }
+
+            #friendNamesDiv {
+                max-height: 300px; 
+                overflow-y: auto; 
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class = "container">
+            <h2>My Friends List</h2>
+            <button type="button" id="RandomNum">Random Number of My Friends</button>
+            <input id="numFriends" readonly width = "5px">
+            <div id="friendNamesDiv">
+                <label id="friendNames"></label>
+            </div>
+            <button type="button" id="submitNames">Submit Names</button>
+            <div id="results">
+                <button type="button" id="totalAgeBtn">Calculate Total Age</button>
+                <button type="button" id="averageAgeBtn">Calculate Average Age</button>
+                <button type="button" id="minAgeBtn">Calculate Minimum Age</button>
+                <button type="button" id="maxAgeBtn">Calculate Maximum Age</button>
+            </div>
+        </div>
+    </body>
+    
+    <script>
+        document.getElementById("RandomNum").onclick = function(){
+            var numFriends = Math.floor(Math.random() * 9) + 1;
+            document.getElementById("numFriends").value = numFriends;
+            var friendNamesDiv = document.getElementById("friendNames");
+            friendNamesDiv.innerHTML = ""; 
+            
+            for (var i = 0; i < numFriends; i++) {
+                var input = document.createElement("input");
+                input.type = "text";
+                input.placeholder = "Friend " + (i + 1) + " Name";
+                friendNamesDiv.appendChild(input);
+                friendNamesDiv.appendChild(document.createElement("br"));
+
+                var ageInput = document.createElement("input");
+                ageInput.type = "number";
+                ageInput.placeholder = "Friend " + (i + 1) + " Age";
+                friendNamesDiv.appendChild(ageInput);
+                friendNamesDiv.appendChild(document.createElement("br"));
+            }
+
+            
+            document.getElementById("submitNames").style.display = "block";
+            friendNamesDiv.style.display = "block";
+        }
+    
+        document.getElementById("submitNames").onclick = function(){
+        var numFriendsInput = document.getElementById("numFriends").value;
+        var numFriends = parseInt(numFriendsInput);
+        var inputs = document.getElementById("friendNamesDiv").getElementsByTagName("input");
+        
+        for (var i = 0; i < numFriends; i++) {
+            var name = inputs[i * 2].value.trim();
+            var age = inputs[i * 2 + 1].value.trim();
+
+            if (!name || !age) {
+                alert("Please enter names and ages for all friends.");
+                return;
+            }
+        }
+
+        var friendNames = [];
+        for (var i = 0; i < inputs.length; i++) {
+            friendNames.push(inputs[i].value);
+    }
+}
+
+        document.getElementById("totalAgeBtn").onclick = function(){
+        var ageInputs = document.querySelectorAll('input[type="number"]');
+        var totalAge = 0;
+        for(var i = 0; i < ageInputs.length; i++) {
+            totalAge += parseInt(ageInputs[i].value);
+        }
+        alert("Total Age: " + totalAge);
+    }
+
+    document.getElementById("averageAgeBtn").onclick = function(){
+        var ageInputs = document.querySelectorAll('input[type="number"]');
+        var totalAge = 0;
+        for(var i = 0; i < ageInputs.length; i++) {
+            totalAge += parseInt(ageInputs[i].value);
+        }
+        var averageAge = totalAge / ageInputs.length;
+        alert("Average Age: " + averageAge.toFixed(2)); 
+    }
+
+    document.getElementById("minAgeBtn").onclick = function(){
+        var ageInputs = document.querySelectorAll('input[type="number"]');
+        var minAge = Infinity;
+        var minAgeFriends = [];
+        for(var i = 0; i < ageInputs.length; i++) {
+            var age = parseInt(ageInputs[i].value);
+            if(age < minAge) {
+                minAge = age;
+                minAgeFriends = [document.querySelectorAll('input[type="text"]')[i].value];
+            } else if (age === minAge) {
+                minAgeFriends.push(document.querySelectorAll('input[type="text"]')[i].value);
+            }
+        }
+        alert("Minimum Age: " + minAge + " (Friend(s): " + minAgeFriends.join(", ") + ")");
+    }
+
+    document.getElementById("maxAgeBtn").onclick = function(){
+        var ageInputs = document.querySelectorAll('input[type="number"]');
+        var maxAge = -Infinity;
+        var maxAgeFriends = [];
+        for(var i = 0; i < ageInputs.length; i++) {
+            var age = parseInt(ageInputs[i].value);
+            if(age > maxAge) {
+                maxAge = age;
+                maxAgeFriends = [document.querySelectorAll('input[type="text"]')[i].value];
+            } else if (age === maxAge) {
+                maxAgeFriends.push(document.querySelectorAll('input[type="text"]')[i].value);
+            }
+        }
+        alert("Maximum Age: " + maxAge + " (Friend(s): " + maxAgeFriends.join(", ") + ")");
+    }
+    </script>
+    
+    
+</html>
